@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "pvcdata" . }}
+  namespace: {{ template "namespace" . }}
+spec:
+  storageClassName: {{ .Values.nfs.name }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.nfs.datasize }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "pvclog" . }}
+  namespace: {{ template "namespace" . }}
+spec:
+  storageClassName: {{ .Values.nfs.name }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.nfs.logsize }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "pvcconfig" . }}
+  namespace: {{ template "namespace" . }}
+spec:
+  storageClassName: {{ .Values.nfs.name }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.nfs.configsize }}

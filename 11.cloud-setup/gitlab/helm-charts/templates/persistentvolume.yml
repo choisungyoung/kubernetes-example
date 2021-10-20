@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "pvdata" . }}
+  labels:
+    type: {{ template "fullname" . }}
+spec:
+  storageClassName: {{ .Values.nfs.name }}
+  capacity:
+    storage: {{ .Values.nfs.datasize }}
+  accessModes:
+    - ReadWriteOnce
+  claimRef:
+    namespace: {{ template "namespace" . }}
+    name: {{ template "pvcdata" . }}
+  nfs:
+    path: /mnt/nfs/gitlab/data
+    server: {{ .Values.nfs.ip }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "pvlog" . }}
+  labels:
+    type: {{ template "fullname" . }}
+spec:
+  storageClassName: {{ .Values.nfs.name }}
+  capacity:
+    storage: {{ .Values.nfs.logsize }}
+  accessModes:
+    - ReadWriteOnce
+  claimRef:
+    namespace: {{ template "namespace" . }}
+    name: {{ template "pvclog" . }}
+  nfs:
+    path: /mnt/nfs/gitlab/log
+    server: {{ .Values.nfs.ip }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "pvconfig" . }}
+  labels:
+    type: {{ template "fullname" . }}
+spec:
+  storageClassName: {{ .Values.nfs.name }}
+  capacity:
+    storage: {{ .Values.nfs.configsize }}
+  accessModes:
+    - ReadWriteOnce
+  claimRef:
+    namespace: {{ template "namespace" . }}
+    name: {{ template "pvcconfig" . }}
+  nfs:
+    path: /mnt/nfs/gitlab/config
+    server: {{ .Values.nfs.ip }}
